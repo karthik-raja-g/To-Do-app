@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="toDoStyle.css">
+        <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+    </head>
+    <body>
+        <section class="container"> 
+            <div class="header">
+                <h3>To-Do</h3>
+                <div class="body">
+                    <div class="menu">
+                        <button class="menuButton" id="sideNav"></button><br><br>
+                        <div id="options">
+                            <div class="sideMenu">
+                                <i class="sideMenuIcons" id="sun"></i>
+                                <div><a href="#"> My Day</a></div>
+                            </div>
+                            <div class="sideMenu">
+                                <i class="sideMenuIcons" id="star"></i>
+                                <div><a href="#"> Important</a></div>
+                            </div>
+                            <div class="sideMenu">
+                                <i class="sideMenuIcons" id="calender"></i>
+                                <div><a href="#"> Planned</a></div>
+                            </div>
+                            <div class="sideMenu">
+                                <i class="sideMenuIcons" id="home"></i>
+                                <div><a href="#"> Tasks</a></div>
+                            </div>
+                            <div class="sideMenu">
+                                <i class="sideMenuIcons" id="list"></i>
+                                    <a href="#"> My List</a>
+                            </div>
+                            <div class="category">
+                            </div>
+                            <div class="sideMenu">
+                                <i class="sideMenuIcons" id="addList"></i>
+                                <input id="newList" type="text" value="" placeholder= "New List"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tasks">
+                        <h1 class= "subTaskHeader"></h1>
+                        <div class="subTaskDetails"></div>
+                        <div class="taskDetails"></div>
+                    </div>
+                    <div class="stepDetails">
+                        <div class="taskSteps">
+                            <div class="stepHeader"></div>
+                            <div class="stepInputDiv"></div>
+                            <div class="steps"></div>
+                        </div>
+                        <div class="scheduler"></div>
+                        <div class="reminder"></div>                        
+                        <div class="taskNotes">
+                            <textarea id="notes" value="" placeholder="Add a note"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </body>
+<script src="toDoScript.js">
+</script>
+</html>
