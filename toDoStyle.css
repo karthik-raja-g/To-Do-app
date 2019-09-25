@@ -33,8 +33,11 @@
 .body .menu {
   position: fixed;
   background-color:  #F4F4F4;
-  height: inherit;
+  height: 50em;
   width: 10em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: 0.3s; 
 }
 
 .body .menu a {
@@ -87,7 +90,8 @@
   border-style: solid;
   border-color: grey;
   border-width: 1px; 
-  transition: 0.5x; 
+  transition: 0.3s; 
+  overflow-x: hidden; 
 }
 
 .sideMenuIcons {
@@ -98,6 +102,7 @@
   top: 2.4em;
   left: 0.5em;
 }
+
 #sun {
   background: url("img/sun.png");
 }
@@ -139,11 +144,19 @@
   border: none;
 }
 
+.body .menu  #addCategory {
+  position: relative;
+  top: 1em;
+  left: 0em;
+}
+
 .category {
-  height: 10em;
-  width: 19em;
-  overflow-y:auto;
-  overflow-x:none;
+  position: relative;
+  top: 0em;
+  height: 15em;
+  width: 18em;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .categoryName {
@@ -157,46 +170,84 @@
   background-color: #d9d9d9;
 }
 
-
 .taskDetails {
+  /*position: sticky;
+  position: -webkit-sticky;*/
   position: relative;
-  left: 3em;
-  top: 0em;
-  width: 2em;
+  left: 6em;
+  bottom: -5em;
+  width: 49em;
   font-family: 'Roboto', sans-serif;
+  border: none;
+  height: 3em;
+  border-bottom-style: solid;
+  border-color: grey;
+  border-width: 1px;
+  visibility: hidden; 
+}
+
+.tasks p {
+  position: absolute;
+  top: 4em;
+  font-size: 75%;
+  left: 5em;
+  font-family: 'Roboto', sans-serif;
+}
+
+.taskAdder {
+  position: relative;
+  height: 1.5em;
+  left: 5.3em;
+  display: inline-block;
+  width: 1.5em;
+  top: -1.5em;
+}
+
+.taskDetails input {
+  font-size: 100%;
+  outline: none;
+  position: relative;
+  top: -1.6em;
 }
 
 .subTaskAddition {
   position: relative;
-  left: 13em;
-  top: 3em;
+  left: 14em;
+  top: 2em;
   width: 5em;
   height: 3em;
-  cursor: pointer; 
-  font-family: 'Roboto', sans-serif; 
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
 }
 
 .tasks h1 {
   position: absolute;
   top: 0em;
   left: 2em;
+  font-size: 180%;
 }
 
 .tasks .subTaskDetails {
   position: relative;
-  top: 9em;
   padding: 1em 1em 1em 4em;
   font-family: 'Roboto', sans-serif;
-  left: -4em; 
+  left: -2em;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 52em;
+  top: 5em;
+}
+
+.tasks .subTaskDetails p {
+  cursor: pointer;
 }
 
 .subTask {
   position: relative;
   width: 70em;
-  height: 3em;
+  height: 4em;
   right: -4em;
-  top: -8em;
-  cursor: pointer;
+  top: -1em;
   border-bottom-style: solid;
   border-width: 1px;
   font-family: 'Roboto', sans-serif;
@@ -206,7 +257,25 @@
 
 .subTask p {
   position: relative;
-  top: 1.5em;
+  top: -1.5em;
+  left: 4em;
+  font-size: 125%;
+}
+
+.selectIcon {
+  height: 2.5em;
+  width: 2.5em;
+  display: inline-block;
+  position: relative; 
+  top: 1.2em;
+  left: 0.5em;
+}
+#unCheckedIcon {
+  background-image: url("img/uncheck.png");
+}
+
+#checkedIcon {
+  background-image: url("img/check.png");
 }
 
 #addSub {
@@ -231,6 +300,7 @@
   border-width: 1px;
   overflow-y:auto;
   border-color: grey;
+  transition: 0.3s; 
 }
 
 .taskSteps {
@@ -255,10 +325,28 @@
   top: 1em;
 }
 
-.stepHeader label {
-  height: 2em;
-  width: 2em;
-  border-radius:50%;
+.stepHeader #stepHeading, .newTaskHeading {
+  position: relative;
+  top: -2.1em;
+  right: -1em;
+  width: 4em;
+  cursor: pointer;
+  border: none;
+}
+
+.stepHeader #stepStats {
+  position: relative;
+  font-size: 50%;
+  width: 13em;
+  right: -9em;
+  top: -0.2em;
+}
+
+.stepHeader .newTaskHeading {
+  font-size: 100%;
+  border-bottom-style: solid;
+  border-width: 1px;
+  outline: none;
 }
 
 .stepDetails .scheduler {
@@ -319,24 +407,25 @@
   width: 17em;
   height: 3em;
   right: -0.8em;
-  top: -2em;
+  top: -1em;
   border-bottom-style: solid;
   border-width: 1px;
   font-family: 'Roboto', sans-serif;
   align-content: center;
   border-color: grey;
-  cursor: pointer; 
 }
 
 .subStep p {
   position: relative;
-  top: 1.5em;
+  top: -0.5em;
+  width: 10em;
+  cursor: pointer;
 }
 
-#hola {
+#taskCheckBox {
   position: absolute;
-  top: 2.5em;
-  right: 45.2em;
+  top: 0.2em;
+  right: 24.8em;
 }
 
 .steps {
@@ -348,6 +437,16 @@
   right: 0.1em;
 }
 
+.steps .stepDeletion {
+  position: relative;
+  display: block;
+  width: 1em;
+  height: 1em;
+  bottom: -1.6em;
+  right: -16em;
+  background: url(img/close.png);
+  cursor: pointer;
+}
 .stepInput {
   position: relative;
   width: 15em;
@@ -367,4 +466,16 @@
   border: none;
   top: 0.1em;
 }
+
+.stepDetails .slider {
+  position: relative;
+  display: block;
+  width: 1em;
+  height: 1em;
+  bottom: -7em;
+  right: -1em;
+  background: url(img/slider.png);
+  cursor: pointer;
+}
+
 
