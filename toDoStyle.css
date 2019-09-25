@@ -1,0 +1,370 @@
+.container {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: brown;
+}
+
+.header {
+  position: absolute;
+  background-color: #117AD3;
+  height: 5em;
+  width: inherit;
+}
+
+.header h3 {
+  position: relative;
+  font-family: 'Roboto', sans-serif;
+  left: 01%;
+  top: -5%;
+  color: white;
+  font-size: 100%;
+}
+
+.body {
+  position: relative;
+  height: 100em;
+  width: inherit;
+  top: -0.6em; 
+  background-color: grey;
+
+}
+
+.body .menu {
+  position: fixed;
+  background-color:  #F4F4F4;
+  height: inherit;
+  width: 10em;
+}
+
+.body .menu a {
+  position: relative;
+  padding: 1em 1em 1em 4em;
+  color: white;
+  display: block;
+  text-decoration: none;
+  width: 10em;
+  left: 3em;
+}
+
+.menu a:hover {
+  background-color: #d9d9d9;
+}
+
+.menuButton{
+  position: relative;
+  background-color: inherit;
+  color: white;
+  border: none;
+  top: 01em;
+  right: -0.5em; 
+}
+
+#sideNav {
+  position: relative;
+  left: 0.8em;
+  width: 1.5em ;
+  height: 1.5em;
+  color: red;
+  background: url("img/menu.png");
+}
+
+#subMenu {
+  position: relative;
+  height: inherit;
+  left: 2.7em;
+  bottom: 5em;
+  background-color: inherit;
+}
+
+.tasks {
+  background-color: #FFFFFF;
+  position: relative;
+  height: 50em;
+  left: 03em;
+  width: 100em ;
+  bottom: 100.7em;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px; 
+  transition: 0.5x; 
+}
+
+.sideMenuIcons {
+  position: relative;
+  height: 1.6em;
+  width: 1.6em;
+  display: block;
+  top: 2.4em;
+  left: 0.5em;
+}
+#sun {
+  background: url("img/sun.png");
+}
+#star {
+  background: url("img/star.png");
+}
+
+#calender {
+  background: url("img/calender.svg");
+}
+
+#home {
+  background: url("img/home.png");
+}
+
+#list {
+  background: url("img/list.png");
+}
+
+#addList {
+  background: url("img/addList.png");
+}
+
+#options {
+  font-family: 'Roboto', sans-serif; 
+}
+
+#options a {
+ color: black;
+}
+
+#newList {
+  position: relative;
+  left: 3em;
+  height: 1.5em;
+  top: 0em;
+  width: 8em;
+  font-size: 160%;
+  border: none;
+}
+
+.category {
+  height: 10em;
+  width: 19em;
+  overflow-y:auto;
+  overflow-x:none;
+}
+
+.categoryName {
+  position: relative;
+  width: 15em;
+  height: 1em;
+  display: inline;
+}
+
+.categoryName:hover {
+  background-color: #d9d9d9;
+}
+
+
+.taskDetails {
+  position: relative;
+  left: 3em;
+  top: 0em;
+  width: 2em;
+  font-family: 'Roboto', sans-serif;
+}
+
+.subTaskAddition {
+  position: relative;
+  left: 13em;
+  top: 3em;
+  width: 5em;
+  height: 3em;
+  cursor: pointer; 
+  font-family: 'Roboto', sans-serif; 
+}
+
+.tasks h1 {
+  position: absolute;
+  top: 0em;
+  left: 2em;
+}
+
+.tasks .subTaskDetails {
+  position: relative;
+  top: 9em;
+  padding: 1em 1em 1em 4em;
+  font-family: 'Roboto', sans-serif;
+  left: -4em; 
+}
+
+.subTask {
+  position: relative;
+  width: 70em;
+  height: 3em;
+  right: -4em;
+  top: -8em;
+  cursor: pointer;
+  border-bottom-style: solid;
+  border-width: 1px;
+  font-family: 'Roboto', sans-serif;
+  align-content: center;
+  border-color: grey;
+}
+
+.subTask p {
+  position: relative;
+  top: 1.5em;
+}
+
+#addSub {
+  background: url("img/addList.png");
+  background-repeat: no-repeat;
+  display: block;
+  height: 0.5em;
+  width: 1.8em;
+  left: 3em;
+  top: 4em;
+  cursor: pointer;
+}
+
+.stepDetails {
+  position: absolute;
+  background-color:  #F4F4F4;
+  height: 50em;
+  left: 103em;
+  width: 50em ;
+  top: 2.55em;
+  border-left-style: solid;
+  border-width: 1px;
+  overflow-y:auto;
+  border-color: grey;
+}
+
+.taskSteps {
+  position: relative;
+  width: 21em;
+  top: 0.7em;
+  height: 18em;
+  background-color: white;
+  right: -0.8em;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px; 
+}
+
+.stepHeader {
+  font-family: 'Roboto', sans-serif; 
+  position: absolute;
+  left: 1.5em;
+  white-space: normal;
+  width: 17em;
+  font-size: 120%;
+  top: 1em;
+}
+
+.stepHeader label {
+  height: 2em;
+  width: 2em;
+  border-radius:50%;
+}
+
+.stepDetails .scheduler {
+  position: relative;
+  width: 21em;
+  top: 2em;
+  height: 3em;
+  right: -0.8em;
+  background-color: white;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px; 
+}
+
+.stepDetails .reminder {
+  position: relative;
+  width: 21em;
+  top: 3.5em;
+  height: 10em;
+  right: -0.8em;
+  background-color: white;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px; 
+}
+.stepDetails .taskNotes {
+  position: relative;
+  width: 21em;
+  top: 5em;
+  height: 7em;
+  right: -0.8em;
+  background-color: white;
+  border-style: solid;
+  border-color: grey;
+  border-width: 1px; 
+}
+
+.stepInput {
+  position: relative;
+  width: 15em;
+  bottom: -4em;
+  height: 4em;
+  right: -1.5em;
+
+}
+
+.inputStep {
+  border: none;
+  outline: none;
+  position: relative;
+  top: 1em;
+  width: 4em;
+  right: -1em;
+}
+
+.subStep {
+  position: relative;
+  width: 17em;
+  height: 3em;
+  right: -0.8em;
+  top: -2em;
+  border-bottom-style: solid;
+  border-width: 1px;
+  font-family: 'Roboto', sans-serif;
+  align-content: center;
+  border-color: grey;
+  cursor: pointer; 
+}
+
+.subStep p {
+  position: relative;
+  top: 1.5em;
+}
+
+#hola {
+  position: absolute;
+  top: 2.5em;
+  right: 45.2em;
+}
+
+.steps {
+  position: absolute;
+  top: 7em;
+  height: 10.5em;
+  overflow-y: auto;
+  width: 20em;
+  right: 0.1em;
+}
+
+.stepInput {
+  position: relative;
+  width: 15em;
+  bottom: -3em;
+  height: 2em;
+  right: -1.5em;
+  border-bottom-style: solid;
+  border-color: grey;
+  border-width: 1px;
+}
+
+.stepDetails .taskNotes textarea {
+  position: relative;
+  width: 25em;
+  left: 0em;
+  height: 8em;
+  border: none;
+  top: 0.1em;
+}
+
