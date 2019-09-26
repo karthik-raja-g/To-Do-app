@@ -2,32 +2,30 @@
 // The main array to which all tasks related details are to be added in form of objects
 var tasks = [];
 
-document.getElementById("sideNav").addEventListener('click', displaySideMenu);
-document.querySelector("#newList").addEventListener("keypress", function(e) {addCategory(e)});
+    /* It checks for any key press events that occurs in the body
+     * and redirects it the correct receivers based on class name
+     *
+     * @param e - The element that triggered the keypress event
+     */
+    document.querySelector('body').addEventListener("keypress", function (e) {
+        if(e.target.className === "taskAddition") {
+            console.log(e.keyCode);
+            addSubTasks(e);
+        }
+        if(e.target.className === "inputStep") {
+            getSteps(e);
+        }
 
-/**
- * It displays the side menu when the user clicks the menu icon
- * All functions of the To do app is accessed from here
- * 
- */
-function displaySideMenu() {
-    var tasks = document.querySelector(".tasks");
-    var sheets = document.styleSheets;
-    if(tasks.style.width == "100em") {
-        tasks.style.width = "85em";
-        tasks.style.marginLeft = "15em";
-        document.querySelector(".menu").style.width = "18em";
-        document.querySelector(".category").style.visibility = "visible";
-        document.querySelector("#newList").style.visibility = "visible";
-    }
-    else {
-        tasks.style.width = "100em";
-        document.querySelector(".menu").style.width = "10em";
-        tasks.style.marginLeft = "0em";
-        document.querySelector(".category").style.visibility = "hidden";
-        document.querySelector("#newList").style.visibility = "hidden";
-    }
-}
+        if(e.target.className === "newTaskHeading") {
+            updateTaskHeading(e);
+        }
+
+        if(e.target.className === "newList") {
+            addCategory(e);
+        }
+    });
+
+    document.getElementById("sideNav").addEventListener('click', displaySideMenu);
 
 /**
  * the event when the user adds a new list. The function checks
@@ -200,50 +198,32 @@ function getCompletedTasks(index) {
  * @param index - The index of category in main array 
  */
 function getSubTasks(e,index) {
-    var taskDetails = document.querySelector(".taskDetails");
-    let ref = e.target.id+"_input";
-    var getSubTask = createElement("textarea");
-    getSubTask.style.display = "inline-block";
-    getSubTask.style.position = "relative";
-    getSubTask.style.top = "-2.4em";
-    getSubTask.style.border = "none";
-    getSubTask.style.width = "16em";
-    getSubTask.style.outline = "none";
+    let taskDetails = document.querySelector(".taskDetails");
+    let getSubTask = createElement("textarea");
     getSubTask.setAttribute("placeholder", "Type here");
-    getSubTask.setAttribute("class", ref);
-    getSubTask.setAttribute("display", "inline");
+    getSubTask.setAttribute("class", "taskAddition");
     taskDetails.appendChild(getSubTask);
+    let indexInfo = createElement("input");
+    indexInfo.setAttribute("class","indexInfo");
+    indexInfo.setAttribute("value",index);
+    indexInfo.setAttribute("type","hidden");
+    taskDetails.appendChild(indexInfo);
+}
 
-    /* It checks for any key press events that occurs in the body
-     * and redirects it the correct receivers based on class name
-     *
-     * @param e - The element that triggered the keypress event
-     */
-    document.querySelector('body').addEventListener("keypress", function (e) {
-        if(e.target.className === ref) {
-            console.log(e.keyCode);
-            if(e.keyCode === 13 && getSubTask.value != "") {
-                let subTaskInfo = {};
-                subTaskInfo["info"] = getSubTask.value;
-                subTaskInfo["steps"] = [];
-                subTaskInfo["notes"] = "";
-                subTaskInfo["isAvailable"] = true;
-                subTaskInfo["isDeleted"] = false;
-                tasks[index].subTasks.push(subTaskInfo);
-                getSubTask.value = "";
-                displaySubTasks(index);
-            }
-        }
-
-        if(e.target.className === "inputStep") {
-            getSteps(e);
-        }
-
-        if(e.target.className === "newTaskHeading") {
-            updateTaskHeading(e);
-        }
-
-    });
+function addSubTasks(e) {
+    if(e.keyCode === 13 && document.querySelector(".taskAddition").value != "") {
+        let index = document.querySelector(".indexInfo").value;
+        let subTaskInfo = {};
+        subTaskInfo["info"] = document.querySelector(".taskAddition").value;
+        subTaskInfo["steps"] = [];
+        subTaskInfo["notes"] = "";
+        subTaskInfo["isAvailable"] = true;
+        subTaskInfo["isDeleted"] = false;
+        tasks[index].subTasks.push(subTaskInfo);
+        document.querySelector(".taskAddition").value = "";
+        console.log(document.querySelector(".indexInfo").value+" --------------");
+        displaySubTasks(index);
+    }
 }
 
 /**
@@ -255,40 +235,43 @@ function displaySubTasks(index) {
     var taskDetails = document.querySelector(".subTaskDetails");
     clearContent(taskDetails);
     for(let key in tasks[index].subTasks) {
-        var div = createElement("div");
-        var para = createElement("p");
-        let taskIndex = key;
-        div.setAttribute("class", "subTask");
-        let status = tasks[index].subTasks[key].isAvailable;
-        if(status) {
-            let uncheck = createElement("i");
-            uncheck.setAttribute("class", "selectIcon");
-            uncheck.setAttribute("id","unCheckedIcon");
-            div.appendChild(uncheck);
-            addInnerHTML(para,tasks[index].subTasks[key].info);
-            div.appendChild(para);
-            uncheck.onclick = function(e) {strikeContent(index,taskIndex,-1)};
-            para.onclick = function(e) {addSteps(index,taskIndex)};
-            taskDetails.appendChild(div);
-            displayStepsMenu();
-            addSteps(index,taskIndex);
-        }
-        if(!status)  {
-            let check = createElement("i");
-            check.setAttribute("class", "selectIcon");
-            check.setAttribute("id","checkedIcon");
-            div.appendChild(check);
-            let strikedTask = tasks[index].subTasks[key].info.strike();
-            addInnerHTML(para,strikedTask)
-            div.appendChild(para);
-            check.onclick = function(e) {strikeContent(index,taskIndex,-1)};
-            para.onclick = function(e) {addSteps(index,taskIndex)};
-            taskDetails.appendChild(div);
-            displayStepsMenu();
-            addSteps(index,taskIndex);
-        }
+        (function () {
+            var div = createElement("div");
+            var para = createElement("p");
+            var taskIndex = key;
+            div.setAttribute("class", "subTask");
+            var status = tasks[index].subTasks[key].isAvailable;
+            if(status) {
+                let uncheck = createElement("i");
+                uncheck.setAttribute("class", "selectIcon");
+                uncheck.setAttribute("id","unCheckedIcon");
+                div.appendChild(uncheck);
+                addInnerHTML(para,tasks[index].subTasks[taskIndex].info);
+                div.appendChild(para);
+                uncheck.addEventListener('click',function(e) {strikeContent(index,taskIndex,-1)});
+                para.addEventListener('click',function(e) {addSteps(index,taskIndex)});
+                taskDetails.appendChild(div);
+                displayStepsMenu();
+                addSteps(index,taskIndex);
+            }
+            if(!status)  {
+                let check = createElement("i");
+                check.setAttribute("class", "selectIcon");
+                check.setAttribute("id","checkedIcon");
+                div.appendChild(check);
+                let strikedTask = tasks[index].subTasks[taskIndex].info.strike();
+                addInnerHTML(para,strikedTask)
+                div.appendChild(para);
+                check.addEventListener('click',function(e) {strikeContent(index,taskIndex,-1)});
+                para.addEventListener('click',function(e) {addSteps(index,taskIndex)});
+                taskDetails.appendChild(div);
+                displayStepsMenu();
+                addSteps(index,taskIndex);
+            }
+        }());
     }
 }
+
 
 /**
  * It adds the various steps for the selected task of a category
@@ -329,7 +312,7 @@ function addSteps(index,subIndex) {
     if(status) {
         addInnerHTML(para,tasks[index].subTasks[subIndex].info);
         header.appendChild(para);
-        para.onclick = function(e) {editTaskName(index,subIndex)};
+        para.addEventListener('click',function(e) {editTaskName(index,subIndex)});
         displayStepsMenu();
         displaySteps(index,subIndex);
     }
@@ -338,7 +321,7 @@ function addSteps(index,subIndex) {
         let strikedTask = task.strike();
         addInnerHTML(para,strikedTask);
         header.appendChild(para);
-        para.onclick = function(e) {editTaskName(index,subIndex)};
+        para.addEventListener('click',function(e) {editTaskName(index,subIndex)});
         displayStepsMenu();
         displaySteps(index,subIndex);
     }
@@ -384,7 +367,7 @@ function getCompletedSteps(index,subIndex) {
  */
 function addSlider () {
     let stepsMenu = document.querySelector(".slider");
-    stepsMenu.onclick = function(e) {displayStepsMenu()};
+    stepsMenu.addEventListener('click',function(e) {displayStepsMenu()});
 }
 /**
  * It changes the task name
@@ -569,6 +552,31 @@ function addInnerHTML(obj,content) {
  */
 function clearContent(obj) {
     obj.innerHTML = "";
+}
+
+
+/**
+ * It displays the side menu when the user clicks the menu icon
+ * All functions of the To do app is accessed from here
+ * 
+ */
+function displaySideMenu() {
+    var tasks = document.querySelector(".tasks");
+    var sheets = document.styleSheets;
+    if(tasks.style.width == "100em") {
+        tasks.style.width = "85em";
+        tasks.style.marginLeft = "15em";
+        document.querySelector(".menu").style.width = "18em";
+        document.querySelector(".category").style.visibility = "visible";
+        document.querySelector(".newList").style.visibility = "visible";
+    }
+    else {
+        tasks.style.width = "100em";
+        document.querySelector(".menu").style.width = "10em";
+        tasks.style.marginLeft = "0em";
+        document.querySelector(".category").style.visibility = "hidden";
+        document.querySelector(".newList").style.visibility = "hidden";
+    }
 }
 
 
