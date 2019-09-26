@@ -2,10 +2,8 @@
 // The main array to which all tasks related details are to be added in form of objects
 var tasks = [];
 
-var button = document.getElementById("sideNav");
-var addBtn = document.querySelector("#newList");
-var count = 0;
-button.addEventListener('click', displaySideMenu);
+document.getElementById("sideNav").addEventListener('click', displaySideMenu);
+document.querySelector("#newList").addEventListener("keypress", function(e) {addCategory(e)});
 
 /**
  * It displays the side menu when the user clicks the menu icon
@@ -14,19 +12,20 @@ button.addEventListener('click', displaySideMenu);
  */
 function displaySideMenu() {
     var tasks = document.querySelector(".tasks");
-    var css = ".menu a:hover {background-color: none}";
     var sheets = document.styleSheets;
     if(tasks.style.width == "100em") {
         tasks.style.width = "85em";
         tasks.style.marginLeft = "15em";
         document.querySelector(".menu").style.width = "18em";
         document.querySelector(".category").style.visibility = "visible";
+        document.querySelector("#newList").style.visibility = "visible";
     }
     else {
         tasks.style.width = "100em";
         document.querySelector(".menu").style.width = "10em";
         tasks.style.marginLeft = "0em";
         document.querySelector(".category").style.visibility = "hidden";
+        document.querySelector("#newList").style.visibility = "hidden";
     }
 }
 
@@ -37,9 +36,9 @@ function displaySideMenu() {
  *
  * @param e The event object containig the entered value
  */
-addBtn.addEventListener("keypress", function (e) {
-    let category = addBtn.value;
-    if(e.keyCode === 13 && addBtn.value != "") {
+function addCategory(e) {
+    let category = e.target.value;
+    if(e.keyCode === 13 && category != "") {
         e.preventDefault();
         let taskDetails = {};
         let subTasks = [];
@@ -51,11 +50,11 @@ addBtn.addEventListener("keypress", function (e) {
         taskDetails["subTasks"] = subTasks;
         tasks.push(taskDetails); 
         console.log(tasks);
-        addBtn.value = "";        
+        e.target.value = "";        
         //document.querySelector("#counter").innerHTML = (count+=1);
         displayAddedCategory();
     }  
-  });
+  }
 
 /**
  * It displays the selected category to which the tasks are
@@ -63,26 +62,25 @@ addBtn.addEventListener("keypress", function (e) {
  */
 function displayAddedCategory() {
     let div = document.querySelector(".category");
-    div.innerHTML = "";
+    clearContent(div);
     for(let i = 0; i < tasks.length; i++) {
         if (tasks[i].isDeleted == false) {
             let id = tasks[i].id;
             let index = tasks.indexOf(tasks[i]);
             console.log(index);
-            let categoryDiv = document.createElement("div");
-            let icon = document.createElement("i");
-            let anchor = document.createElement("a");
+            let categoryDiv = createElement("div");
+            let icon = createElement("i");
+            let para = createElement("p");
             categoryDiv.setAttribute("id",id);
             icon.setAttribute("class","sideMenuIcons");
             icon.setAttribute("id","list");
             icon.setAttribute("display","inline");
-            anchor.setAttribute("href","#ff");
             categoryDiv.setAttribute("class", "categoryName");
-            categoryDiv.setAttribute("display","inline");
+            categoryDiv.setAttribute("id", "cateName");
             categoryDiv.onclick = function(e) {addTasks(index)};
-            anchor.innerHTML = tasks[i].taskName;
-            categoryDiv.appendChild(anchor);
-            div.appendChild(icon);
+            addInnerHTML(para,tasks[i].taskName);
+            categoryDiv.appendChild(icon);
+            categoryDiv.appendChild(para);
             div.appendChild(categoryDiv);
         }
     }
@@ -94,37 +92,67 @@ function displayAddedCategory() {
  *
  * @param index The index of main category selected in the array 
  */
-var totalTasks;
-var completedTasks;
 function addTasks(index) {
+    console.log(index+"gggggggggggggggggg");
+    let totalTasks;
+    let completedTasks;
     document.querySelector(".taskDetails").style.visibility = "visible";
     var taskInfo = document.querySelector(".taskDetails");
     var tasksBody = document.querySelector(".tasks");
-    taskInfo.innerHTML = "";
-    tasksBody.lastChild.innerHTML = "";
-    document.querySelector(".subTaskDetails").innerHTML = "";
+    clearContent(taskInfo);
+    clearContent(tasksBody.lastChild);
+    clearContent(document.querySelector(".subTaskDetails"));
     var header = document.querySelector(".subTaskHeader");
-    let addDiv = document.createElement("div");
-    let icon = document.createElement("i");
-    let para = document.createElement("p");
-    let getTask = document.createElement("input");
-    header.innerHTML = tasks[index]["taskName"]+"...";
+    let addDiv = createElement("div");
+    let icon = createElement("i");
+    let contextIcon = createElement("i");
+    contextIcon.setAttribute("class", "contextIcon");
+    let categoryDeletion = createElement("div");
+    categoryDeletion.setAttribute("class", "categoryDeletion"); 
+    contextIcon.onclick = function(e) {
+        if(categoryDeletion.style.display === "none") {
+            categoryDeletion.style.display = "block";
+            clearContent(categoryDeletion);
+            let para = createElement("p");
+            addInnerHTML(para,"Delete");
+            categoryDeletion.appendChild(para);
+            categoryDeletion.onclick = function(e) {deleteCategory(index)};
+            header.appendChild(categoryDeletion);
+        }
+        else {
+            categoryDeletion.style.display = "none";
+        }
+    };
+    let para = createElement("p");
+    para.setAttribute("id","stats");
+    let getTask = createElement("input");
+    addInnerHTML(header,tasks[index]["taskName"])
     header.style.color = "#117AD3";
     header.style.fontFamily = "'Roboto', sans-serif";
     addDiv.setAttribute("class", "subTaskAddition");
     addDiv.setAttribute("id", index);
     icon.setAttribute("id","addList");
     icon.setAttribute("class","taskAdder");
-    addDiv.innerHTML = "Add Task";
+    addInnerHTML(addDiv,"Add Task");
     displaySubTasks(index);
     addDiv.onclick = function(e) {getSubTasks(e,index)};
+    header.appendChild(contextIcon);
     tasksBody.appendChild(header);
     totalTasks = tasks[index].subTasks.length;
     completedTasks = getCompletedTasks(index);
-    para.innerHTML = `${completedTasks} of ${totalTasks} tasks completed`;
+    addInnerHTML(para,`${completedTasks} of ${totalTasks} tasks completed`);
     tasksBody.appendChild(para);
     addDiv.appendChild(icon);
     taskInfo.appendChild(addDiv);
+}
+
+/**
+ * It soft deletes a category based on index
+ * 
+ * @param  index - The index of category in main array 
+ */
+function deleteCategory(index) {
+    tasks[index].isDeleted = true;
 }
 
 /**
@@ -170,7 +198,7 @@ function getCompletedTasks(index) {
 function getSubTasks(e,index) {
     var taskDetails = document.querySelector(".taskDetails");
     let ref = e.target.id+"_input";
-    var getSubTask = document.createElement("textarea");
+    var getSubTask = createElement("textarea");
     getSubTask.style.display = "inline-block";
     getSubTask.style.position = "relative";
     getSubTask.style.top = "-2.4em";
@@ -221,19 +249,19 @@ function getSubTasks(e,index) {
  */
 function displaySubTasks(index) {
     var taskDetails = document.querySelector(".subTaskDetails");
-    taskDetails.innerHTML = "";
+    clearContent(taskDetails);
     for(let key in tasks[index].subTasks) {
-        var div = document.createElement("div");
-        var para = document.createElement("p");
+        var div = createElement("div");
+        var para = createElement("p");
         let taskIndex = key;
         div.setAttribute("class", "subTask");
         let status = tasks[index].subTasks[key].isAvailable;
         if(status) {
-            let uncheck = document.createElement("i");
+            let uncheck = createElement("i");
             uncheck.setAttribute("class", "selectIcon");
             uncheck.setAttribute("id","unCheckedIcon");
             div.appendChild(uncheck);
-            para.innerHTML = tasks[index].subTasks[key].info;
+            addInnerHTML(para,tasks[index].subTasks[key].info);
             div.appendChild(para);
             uncheck.onclick = function(e) {strikeContent(index,taskIndex,-1)};
             para.onclick = function(e) {addSteps(index,taskIndex)};
@@ -242,12 +270,12 @@ function displaySubTasks(index) {
             addSteps(index,taskIndex);
         }
         if(!status)  {
-            let check = document.createElement("i");
+            let check = createElement("i");
             check.setAttribute("class", "selectIcon");
             check.setAttribute("id","checkedIcon");
             div.appendChild(check);
             let strikedTask = tasks[index].subTasks[key].info.strike();
-            para.innerHTML = strikedTask;
+            addInnerHTML(para,strikedTask)
             div.appendChild(para);
             check.onclick = function(e) {strikeContent(index,taskIndex,-1)};
             para.onclick = function(e) {addSteps(index,taskIndex)};
@@ -266,26 +294,26 @@ function displaySubTasks(index) {
  */
 function addSteps(index,subIndex) {
     let header = document.querySelector(".stepHeader");
-    header.innerHTML = "";
+    clearContent(header);
     addSlider();
     var stepDetails = document.querySelector(".steps");
-    document.querySelector(".stepInputDiv").innerHTML = "";
-    let radio = document.createElement("input");
-    let step = document.createElement("input");
-    let inputDiv = document.createElement("div");
-    let para = document.createElement("p");
+    clearContent(document.querySelector(".stepInputDiv"));
+    let radio = createElement("input");
+    let step = createElement("input");
+    let inputDiv = createElement("div");
+    let para = createElement("p");
     para.setAttribute("id","stepHeading");
-    let countPara = document.createElement("p");
+    let countPara = createElement("p");
     countPara.setAttribute("id","stepStats");
-    countPara.innerHTML = `${getCompletedSteps(index,subIndex)} of ${getTotalSteps(index,subIndex)} steps completed`;
+    addInnerHTML(countPara,`${getCompletedSteps(index,subIndex)} of ${getTotalSteps(index,subIndex)} steps completed`);
     inputDiv.setAttribute("class","stepInput");
     step.setAttribute("class", "inputStep");
     step.setAttribute("placeholder", "Add step");
     inputDiv.appendChild(step);
     radio.setAttribute("type","checkbox");
     radio.setAttribute("id", "taskCheckBox");
-    let categoryInfo = document.createElement("input");
-    let taskInfo = document.createElement("input");
+    let categoryInfo = createElement("input");
+    let taskInfo = createElement("input");
     categoryInfo.setAttribute("id","category");
     categoryInfo.setAttribute("type","hidden");
     categoryInfo.setAttribute("value",index);
@@ -295,7 +323,7 @@ function addSteps(index,subIndex) {
     header.appendChild(countPara);
     let status = tasks[index].subTasks[subIndex].isAvailable;
     if(status) {
-        para.innerHTML = tasks[index].subTasks[subIndex].info;
+        addInnerHTML(para,tasks[index].subTasks[subIndex].info);
         header.appendChild(para);
         para.onclick = function(e) {editTaskName(index,subIndex)};
         displayStepsMenu();
@@ -304,7 +332,7 @@ function addSteps(index,subIndex) {
     else {
         let task = tasks[index].subTasks[subIndex].info;
         let strikedTask = task.strike();
-        para.innerHTML = strikedTask;
+        addInnerHTML(para,strikedTask);
         header.appendChild(para);
         para.onclick = function(e) {editTaskName(index,subIndex)};
         displayStepsMenu();
@@ -362,10 +390,10 @@ function addSlider () {
  */
 function editTaskName(index,subIndex) {
     let header = document.querySelector(".stepHeader").firstChild;
-    let input = document.createElement("input");
+    let input = createElement("input");
     input.setAttribute("class", "newTaskHeading");
     input.setAttribute("value", tasks[index].subTasks[subIndex].info);
-    header.innerHTML = "";
+    clearContent(header);
     document.querySelector(".stepHeader").appendChild(input);
 }
 
@@ -434,20 +462,21 @@ function displayStepsMenu () {
  */
 function displaySteps(categoryIndex,taskIndex) { 
     var stepDetails = document.querySelector(".steps");
-    stepDetails.innerHTML = "";
+    clearContent(stepDetails);
     for(let key in tasks[categoryIndex].subTasks[taskIndex].steps) {
+        let icon = createElement("i");
         if(tasks[categoryIndex].subTasks[taskIndex].steps[key].isDeleted == false) {
-            var div = document.createElement("div");
-            var para = document.createElement("p");
+            var div = createElement("div");
+            var para = createElement("p");
             div.setAttribute("class", "subStep");
             let subIndex = key;
             let status = tasks[categoryIndex].subTasks[taskIndex].steps[key].isAvailable;
-            let deleteOption = document.createElement("i");
+            let deleteOption = createElement("i");
             deleteOption.setAttribute("class", "stepDeletion");
             deleteOption.onclick = function(e) {deleteStep(categoryIndex,taskIndex,subIndex)};
             div.appendChild(deleteOption);
             if(status) {
-                para.innerHTML = tasks[categoryIndex].subTasks[taskIndex].steps[key].step;
+                addInnerHTML(para,tasks[categoryIndex].subTasks[taskIndex].steps[key].step);
                 para.onclick = function(e) {strikeContent(categoryIndex,taskIndex,subIndex)};
                 div.appendChild(para);
                 stepDetails.appendChild(div);
@@ -455,7 +484,7 @@ function displaySteps(categoryIndex,taskIndex) {
             if(!status)  {
                 let step = tasks[categoryIndex].subTasks[taskIndex].steps[key].step;
                 let strikedStep = step.strike();
-                para.innerHTML = strikedStep;
+                addInnerHTML(para,strikedStep);
                 para.onclick = function(e) {strikeContent(categoryIndex,taskIndex,subIndex)};
                 div.appendChild(para);
                 stepDetails.appendChild(div);
@@ -508,6 +537,34 @@ function strikeContent(categoryIndex,taskIndex,subIndex) {
             displaySubTasks(categoryIndex);
         }
     }
+}
+
+/**
+ * It creates and returns an HTML element based on requirement
+ * 
+ * @param  type - The type of element to be created
+ * @returns The created element
+ */
+function createElement(type) {
+    return document.createElement(type);
+}
+
+/**
+ * It adds content inside a particular element
+ * 
+ * @param  obj - The element to which the content is to be added 
+ * @param content - The content to be added  
+ */
+function addInnerHTML(obj,content) {
+    obj.innerHTML = content;
+}
+
+/**
+ * It clears all the contents of an element
+ * @param  obj - The element whoose content is to be cleared 
+ */
+function clearContent(obj) {
+    obj.innerHTML = "";
 }
 
 

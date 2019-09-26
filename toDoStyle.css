@@ -15,10 +15,21 @@
 .header h3 {
   position: relative;
   font-family: 'Roboto', sans-serif;
-  left: 01%;
-  top: -5%;
+  left: 3em;
+  top: -1em;
   color: white;
   font-size: 100%;
+}
+
+.header .roundMenu {
+  position: relative;
+  left: 0.8em;
+  width: 1.2em ;
+  height: 1.2em;
+  background: url("img/menu2.svg");
+  display: inline-block;
+  top: 1em;
+  cursor: pointer;
 }
 
 .body {
@@ -35,26 +46,22 @@
   background-color:  #F4F4F4;
   height: 50em;
   width: 10em;
-  overflow-y: auto;
-  overflow-x: hidden;
   transition: 0.3s; 
+  top: 4.3em;
 }
 
-.body .menu a {
+/*.body .menu a {
   position: relative;
   padding: 1em 1em 1em 4em;
   color: white;
   display: block;
-  text-decoration: none;
+
   width: 10em;
   left: 3em;
-}
+  top: -2em;
+}*/
 
-.menu a:hover {
-  background-color: #d9d9d9;
-}
-
-.menuButton{
+.menuButton {
   position: relative;
   background-color: inherit;
   color: white;
@@ -63,13 +70,24 @@
   right: -0.5em; 
 }
 
+.body .menu .menuOptions .sideMenu {
+  height: 2em;
+  top: -0.5em;
+  position: relative;
+  margin-top: 1em;
+}
+
+.body .menu .menuOptions .sideMenu:hover {
+  background-color: white;
+}
+
 #sideNav {
   position: relative;
-  left: 0.8em;
-  width: 1.5em ;
-  height: 1.5em;
-  color: red;
-  background: url("img/menu.png");
+  left: 1em;
+  width: 1.2em ;
+  height: 1.2em;
+  background: url("img/menu.svg");
+  top: 2.5em;
 }
 
 #subMenu {
@@ -84,27 +102,65 @@
   background-color: #FFFFFF;
   position: relative;
   height: 50em;
-  left: 03em;
-  width: 100em ;
-  bottom: 100.7em;
-  border-style: solid;
-  border-color: grey;
-  border-width: 1px; 
-  transition: 0.3s; 
-  overflow-x: hidden; 
+  left: 3em;
+  width: 100em;
+  border-left-style: solid;
+  border-color: #d9d9d9;
+  border-width: 1px;
+  transition: 0.3s;
+  display: block;
+  overflow-x: hidden;
+  top: -2.1em;
+}
+
+.tasks .subTaskHeader .categoryDeletion {
+  position: relative;
+  top: -3.5em;
+  cursor: pointer;
+  font-family: 'Roboto', sans-serif;
+  height: 2em;
+  width: 5em;
+  font-size: 35%;
+  right: -15em;
+  background-color: #f2f2f2;
+  align-content: center;
+  display: none;
+}
+
+.tasks .subTaskHeader .categoryDeletion p {
+  position: relative;
+  top: 0.5em;
+  right: -1em;
+  font-weight: normal;
+}
+
+.tasks .subTaskHeader .contextIcon {
+  background: url(img/options.png);
+  position: relative;
+  top: 0em;
+  right: -1em;
+  height: 0.55em;
+  display: inline-block;
+  width: 0.55em;
+  cursor: pointer;;
 }
 
 .sideMenuIcons {
   position: relative;
   height: 1.6em;
   width: 1.6em;
-  display: block;
-  top: 2.4em;
+  display: inline-block;
+  top: 0.3em;
   left: 0.5em;
+  cursor: pointer;
+}
+
+.sideMenuIcons: hover {
+  background-color: #d9d9d9;
 }
 
 #sun {
-  background: url("img/sun.png");
+  background: url("img/sun1.svg");
 }
 #star {
   background: url("img/star.png");
@@ -127,36 +183,46 @@
 }
 
 #options {
-  font-family: 'Roboto', sans-serif; 
+  font-family: 'Roboto', sans-serif;
+  position: absolute;
+  top: 4em;
+  height: 15em; 
 }
 
 #options a {
- color: black;
+  color: black;
+  right: 10em;
+  position: absolute;
+  top: 0.5em;
+  width: 4em;
+  font-weight: 100;
+  text-decoration: none;
 }
 
 #newList {
   position: relative;
-  left: 3em;
+  left: 2em;
   height: 1.5em;
   top: 0em;
-  width: 8em;
-  font-size: 160%;
+  width: 10em;
+  font-size: 118%;
   border: none;
+  visibility: hidden;
 }
 
 .body .menu  #addCategory {
   position: relative;
-  top: 1em;
+  top: 1.5em;
   left: 0em;
 }
 
 .category {
   position: relative;
-  top: 0em;
-  height: 15em;
+  top: 1em;
+  height: fit-content;
   width: 18em;
-  overflow-y: auto;
-  overflow-x: hidden;
+  /*overflow-y: auto;
+  overflow-x: hidden;*/
 }
 
 .categoryName {
@@ -166,8 +232,16 @@
   display: inline;
 }
 
-.categoryName:hover {
-  background-color: #d9d9d9;
+.categoryName p {
+  display: block;
+  cursor: pointer;
+  position:relative;
+  right: -4em;
+  top: -2em;
+}
+
+.categoryName: hover {
+  background-color: white;
 }
 
 .taskDetails {
@@ -186,7 +260,7 @@
   visibility: hidden; 
 }
 
-.tasks p {
+.tasks #stats {
   position: absolute;
   top: 4em;
   font-size: 75%;
@@ -291,16 +365,17 @@
 
 .stepDetails {
   position: absolute;
-  background-color:  #F4F4F4;
+  background-color: #F4F4F4;
   height: 50em;
   left: 103em;
-  width: 50em ;
-  top: 2.55em;
+  width: 50em;
+  top: 0em;
   border-left-style: solid;
   border-width: 1px;
-  overflow-y:auto;
+  overflow-y: auto;
   border-color: grey;
-  transition: 0.3s; 
+  transition: 0.3s;
+}
 }
 
 .taskSteps {
