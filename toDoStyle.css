@@ -199,7 +199,7 @@
   text-decoration: none;
 }
 
-#newList {
+.newList {
   position: relative;
   left: 2em;
   height: 1.5em;
@@ -556,6 +556,15 @@
   right: -1em;
   background: url(img/slider.png);
   cursor: pointer;
+}
+
+.taskAddition {
+  position: relative;
+  top: -2.4em;
+  border: none;
+  width: 16em;
+  outline: none;
+  display: inline-block;
 }
 
 
