@@ -1,11 +1,12 @@
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="toDoStyle.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+        <link rel="stylesheet" type="text/css" href="toDoStyle.css">
     </head>
     <body>
         <section class="container"> 
             <div class="header">
+                <i class = "roundMenu"></i>
                 <h3>To-Do</h3>
                 <div class="body">
                     <div class="menu">
@@ -13,31 +14,30 @@
                         <div class= "menuOptions" id="options">
                             <div class="sideMenu">
                                 <i class="sideMenuIcons" id="sun"></i>
-                                <div><a href="#"> My Day</a></div>
+                                <a href="#"> My Day</a>
                             </div>
                             <div class="sideMenu">
                                 <i class="sideMenuIcons" id="star"></i>
-                                <div><a href="#"> Important</a></div>
+                                <a href="#"> Important</a>
                             </div>
                             <div class="sideMenu">
                                 <i class="sideMenuIcons" id="calender"></i>
-                                <div><a href="#"> Planned</a></div>
+                                <a href="#"> Planned</a>
                             </div>
                             <div class="sideMenu">
                                 <i class="sideMenuIcons" id="home"></i>
-                                <div><a href="#"> Tasks</a></div>
+                                <a href="#"> Tasks</a>
                             </div>
                             <div class="sideMenu">
                                 <i class="sideMenuIcons" id="list"></i>
-                                    <a href="#"> My List</a>
+                                <a href="#"> My List</a>
                             </div>
                             <div class="category"></div>
+                            <div class="addCate" id="addCategory">
+                                <i class="sideMenuIcons" id="addList"></i>
+                                <input id="newList" type="text" value="" placeholder= "New List">
+                            </div>
                         </div>
-                        <div class="addCate" id="addCategory">
-                            <i class="sideMenuIcons" id="addList"></i>
-                            <input id="newList" type="text" value="" placeholder= "New List"></div>
-                        </div>
-                    </div>
                     <div class="tasks">
                         <h1 class= "subTaskHeader"></h1>
                         <div class="subTaskDetails"></div>
