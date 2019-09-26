@@ -376,22 +376,21 @@
   border-color: grey;
   transition: 0.3s;
 }
-}
 
 .taskSteps {
-  position: relative;
+  position: absolute;
+  height: 17em;
   width: 21em;
-  top: 0.7em;
-  height: 18em;
   background-color: white;
-  right: -0.8em;
+  right: 18em;
+  top: 1em;
   border-style: solid;
   border-color: grey;
-  border-width: 1px; 
+  border-width: 1px;
 }
 
 .stepHeader {
-  font-family: 'Roboto', sans-serif; 
+  font-family: 'Roboto', sans-serif;
   position: absolute;
   left: 1.5em;
   white-space: normal;
@@ -400,10 +399,10 @@
   top: 1em;
 }
 
-.stepHeader #stepHeading, .newTaskHeading {
-  position: relative;
-  top: -2.1em;
-  right: -1em;
+.stepHeader #stepHeading {
+  position: absolute;
+  top: -1.8em;
+  right: 13em;
   width: 4em;
   cursor: pointer;
   border: none;
@@ -413,11 +412,14 @@
   position: relative;
   font-size: 50%;
   width: 13em;
-  right: -9em;
-  top: -0.2em;
+  right: 0em;
+  top: 0.8em;
 }
 
 .stepHeader .newTaskHeading {
+  position: relative;
+  top: -1.4em;
+  right: 0em;
   font-size: 100%;
   border-bottom-style: solid;
   border-width: 1px;
@@ -427,19 +429,19 @@
 .stepDetails .scheduler {
   position: relative;
   width: 21em;
-  top: 2em;
+  top: 19em;
   height: 3em;
   right: -0.8em;
   background-color: white;
   border-style: solid;
   border-color: grey;
-  border-width: 1px; 
+  border-width: 1px;
 }
 
 .stepDetails .reminder {
   position: relative;
   width: 21em;
-  top: 3.5em;
+  top: 19.5em;
   height: 10em;
   right: -0.8em;
   background-color: white;
@@ -450,7 +452,7 @@
 .stepDetails .taskNotes {
   position: relative;
   width: 21em;
-  top: 5em;
+  top: 20em;
   height: 7em;
   right: -0.8em;
   background-color: white;
@@ -462,9 +464,12 @@
 .stepInput {
   position: relative;
   width: 15em;
-  bottom: -4em;
-  height: 4em;
+  bottom: -3em;
+  height: 2em;
   right: -1.5em;
+  border-bottom-style: solid;
+  border-color: grey;
+  border-width: 1px;
 
 }
 
@@ -499,14 +504,14 @@
 
 #taskCheckBox {
   position: absolute;
-  top: 0.2em;
+  top: -0.8em;
   right: 24.8em;
 }
 
 .steps {
   position: absolute;
   top: 7em;
-  height: 10.5em;
+  height: 9.5em;
   overflow-y: auto;
   width: 20em;
   right: 0.1em;
@@ -547,7 +552,7 @@
   display: block;
   width: 1em;
   height: 1em;
-  bottom: -7em;
+  bottom: -23em;
   right: -1em;
   background: url(img/slider.png);
   cursor: pointer;
