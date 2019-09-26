@@ -64,25 +64,27 @@ function displayAddedCategory() {
     let div = document.querySelector(".category");
     clearContent(div);
     for(let i = 0; i < tasks.length; i++) {
-        if (tasks[i].isDeleted == false) {
-            let id = tasks[i].id;
-            let index = tasks.indexOf(tasks[i]);
-            console.log(index);
-            let categoryDiv = createElement("div");
-            let icon = createElement("i");
-            let para = createElement("p");
-            categoryDiv.setAttribute("id",id);
-            icon.setAttribute("class","sideMenuIcons");
-            icon.setAttribute("id","list");
-            icon.setAttribute("display","inline");
-            categoryDiv.setAttribute("class", "categoryName");
-            categoryDiv.setAttribute("id", "cateName");
-            categoryDiv.onclick = function(e) {addTasks(index)};
-            addInnerHTML(para,tasks[i].taskName);
-            categoryDiv.appendChild(icon);
-            categoryDiv.appendChild(para);
-            div.appendChild(categoryDiv);
-        }
+        (function () {
+            if (tasks[i].isDeleted == false) {
+                let id = tasks[i].id;
+                let index = tasks.indexOf(tasks[i]);
+                console.log(index);
+                let categoryDiv = createElement("div");
+                let icon = createElement("i");
+                let para = createElement("p");
+                categoryDiv.setAttribute("id",id);
+                icon.setAttribute("class","sideMenuIcons");
+                icon.setAttribute("id","list");
+                icon.setAttribute("display","inline");
+                categoryDiv.setAttribute("class", "categoryName");
+                categoryDiv.setAttribute("id", "cateName");
+                categoryDiv.addEventListener('click',function(e) {addTasks(index)});
+                addInnerHTML(para,tasks[i].taskName);
+                categoryDiv.appendChild(icon);
+                categoryDiv.appendChild(para);
+                div.appendChild(categoryDiv);
+            }
+        }());
     }
 }
 
@@ -109,20 +111,21 @@ function addTasks(index) {
     contextIcon.setAttribute("class", "contextIcon");
     let categoryDeletion = createElement("div");
     categoryDeletion.setAttribute("class", "categoryDeletion"); 
-    contextIcon.onclick = function(e) {
+    contextIcon.addEventListener('click',function(e) {
         if(categoryDeletion.style.display === "none") {
             categoryDeletion.style.display = "block";
             clearContent(categoryDeletion);
             let para = createElement("p");
+            let i = index;
             addInnerHTML(para,"Delete");
             categoryDeletion.appendChild(para);
-            categoryDeletion.onclick = function(e) {deleteCategory(index)};
+            categoryDeletion.addEventListener('click',deleteCategory(index));
             header.appendChild(categoryDeletion);
         }
         else {
             categoryDeletion.style.display = "none";
         }
-    };
+    });
     let para = createElement("p");
     para.setAttribute("id","stats");
     let getTask = createElement("input");
@@ -135,7 +138,7 @@ function addTasks(index) {
     icon.setAttribute("class","taskAdder");
     addInnerHTML(addDiv,"Add Task");
     displaySubTasks(index);
-    addDiv.onclick = function(e) {getSubTasks(e,index)};
+    addDiv.addEventListener('click',function(e) {getSubTasks(e,index)});
     header.appendChild(contextIcon);
     tasksBody.appendChild(header);
     totalTasks = tasks[index].subTasks.length;
@@ -152,6 +155,7 @@ function addTasks(index) {
  * @param  index - The index of category in main array 
  */
 function deleteCategory(index) {
+    console.log(index);
     tasks[index].isDeleted = true;
 }
 
