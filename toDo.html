@@ -8,9 +8,12 @@
             <div class="header">
                 <i class = "roundMenu"></i>
                 <h3>To-Do</h3>
+                <div class="searchBox" contenteditable="true" >
+                    <i class="lens"></i>
+                </div>
                 <div class="body">
                     <div class="menu">
-                        <button class="menuButton" id="sideNav"></button><br><br>
+                        <button class="menuButton" id="sideNav" value="open"></button><br><br>
                         <div class= "menuOptions" id="options">
                             <div class="sideMenu">
                                 <i class="sideMenuIcons" id="sun"></i>
@@ -52,9 +55,10 @@
                         <div class="scheduler"></div>
                         <div class="reminder"></div>                        
                         <div class="taskNotes">
-                            <textarea id="notes" value="" placeholder="Add a note"></textarea>
+                            <textarea class="notes" value="" placeholder="Add a note"></textarea>
                         </div>
                         <i class="slider"></i>
+                        <i class="trash"></i>
                     </div>
                 </div>
             </div>
