@@ -157,6 +157,21 @@
   margin-left: 15em;
 }
 
+.taskClosedStepsOpen {
+  margin-left: 15em;
+  width: 85em;
+  margin-right: 0em;
+}
+
+.tasksClosedStepsClosed {
+  width: 57em;
+}
+
+.tasks .subTaskHeader {
+  color: #117AD3;
+  font-family: 'Roboto', sans-serif;
+}
+
 .tasks .subTaskHeader .categoryDeletion {
   position: relative;
   top: -3.5em;
@@ -320,6 +335,10 @@ newListHidden{
   visibility: hidden; 
 }
 
+.showTaskDetails {
+  visibility: visible;
+}
+
 .tasks #stats {
   position: absolute;
   top: 4em;
@@ -373,6 +392,14 @@ newListHidden{
   top: 5em;
 }
 
+.displaySubTasks {
+  display: block;
+}
+
+.hideSubTasks {
+  display: none;
+}
+
 .tasks .subTaskDetails p {
   cursor: pointer;
 }
@@ -388,6 +415,10 @@ newListHidden{
   font-family: 'Roboto', sans-serif;
   align-content: center;
   border-color:  #d9d9d9;
+}
+
+.subTaskClosed {
+  width: 50em;
 }
 
 .subTask p {
@@ -436,6 +467,15 @@ newListHidden{
   overflow-y: auto;
   border-color: grey;
   transition: 0.3s;
+}
+
+.stepDetailsOpen {
+  left: 100em;
+}
+
+.stepDetailsClosed {
+  width: 40em;
+  left: 73em;
 }
 
 .taskSteps {
@@ -616,6 +656,17 @@ newListHidden{
   bottom: -23em;
   right: -1em;
   background: url(img/slider.png);
+  cursor: pointer;
+}
+
+.stepDetails .trash {
+  position: relative;
+  display: block;
+  width: 1em;
+  height: 1em;
+  bottom: -22em;
+  right: -19em;
+  background: url(img/garbage.svg);
   cursor: pointer;
 }
 

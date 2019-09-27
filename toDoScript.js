@@ -1,13 +1,15 @@
 
 // The main array to which all tasks related details are to be added in form of objects
-var tasks = [];
-var clickEvent = new Event('click');
+let tasks = [];
+//let clickEvent = new Event('click');
+init();
 
+function init () {
     /* It checks for any key press events that occurs in the body
-     * and redirects it the correct receivers based on class name
-     *
-     * @param e - The element that triggered the keypress event
-     */
+    * and redirects it the correct receivers based on class name
+    *
+    * @param e - The element that triggered the keypress event
+    */
     document.querySelector('body').addEventListener("keypress", function (e) {
         if(e.target.className === "taskAddition") {
             console.log(e.keyCode);
@@ -24,8 +26,17 @@ var clickEvent = new Event('click');
         if(e.target.className === "newList") {
             addCategory(e);
         }
+
+        if(e.target.className === "notes") {
+            addNotes(e);
+        }
     });
 
+    /* It checks for any mouse click events that occurs in the body
+    * and redirects it the correct handlers based on class name
+    *
+    * @param e - The element that triggered the click event
+    */
     document.querySelector('body').addEventListener("click", function (e) {
         console.log('^^^^^^^');
         console.log(e.target.className);
@@ -44,7 +55,19 @@ var clickEvent = new Event('click');
             console.log("###5555###");
             showTaskDeleteOption(e);
         }
+
+        if(e.target.className === "categoryDeletion") {
+            console.log("###5555###");
+            deleteCategory(e);
+        }
+
+        if(e.target.className === "subTaskAddition") {
+            console.log("##7777777###");
+            getSubTasks(e);
+        }
     });
+}
+
 
 /**
  * the event when the user adds a new list. The function checks
@@ -91,12 +114,8 @@ function displayAddedCategory() {
                 let categoryDiv = createElement("div");
                 let icon = createElement("i");
                 let para = createElement("p");
-                icon.setAttribute("class","sideMenuIcons");
-                icon.setAttribute("id","list");
-                icon.setAttribute("display","inline");
-                categoryDiv.setAttribute("class", "categoryName");
-                categoryDiv.setAttribute("id", index);
-                categoryDiv.dispatchEvent(clickEvent);
+                mapAttributes(icon,[["class","sideMenuIcons"],["id","list"],["display","inline"]]);
+                mapAttributes(categoryDiv,[["class", "categoryName"],["id", index]]);
                 addInnerHTML(para,tasks[i].taskName);
                 categoryDiv.appendChild(icon);
                 categoryDiv.appendChild(para);
@@ -113,7 +132,7 @@ function displayAddedCategory() {
 function showTotalCategories() {
     let menuBar = document.querySelector(".menuOptions")
     let para = createElement("p");
-    para.setAttribute("class", "totalCategories");
+    mapAttributes(para,[["class", "totalCategories"]]);
     let count = 0;
     for(let key in tasks) {
         if(tasks[key].isDeleted === false)
@@ -130,51 +149,36 @@ function showTotalCategories() {
  * @param index The index of main category selected in the array 
  */
 function addTasks(e) {
-    let index = e.target.id;
+    let index;
+    try {
+        index = e.target.id;
+    } catch (TypeError) {
+        index = e;
+    }
     let totalTasks;
     let completedTasks;
-    document.querySelector(".taskDetails").style.visibility = "visible";
     let taskInfo = document.querySelector(".taskDetails");
     let tasksBody = document.querySelector(".tasks");
+    let header = document.querySelector(".subTaskHeader");
     clearContent(taskInfo);
     clearContent(tasksBody.lastChild);
     clearContent(document.querySelector(".subTaskDetails"));
-    let header = document.querySelector(".subTaskHeader");
+    //document.querySelector(".taskDetails").style.visibility = "visible";
+    mapAttributes(document.querySelector(".taskDetails"),[["class", "taskDetails showTaskDetails"]]);
     let addDiv = createElement("div");
     let icon = createElement("i");
     let contextIcon = createElement("i");
-    contextIcon.setAttribute("class", "contextIcon");
-    contextIcon.setAttribute("id", index);
     let categoryDeletion = createElement("div");
-    categoryDeletion.setAttribute("class", "categoryDeletion");
-    contextIcon.dispatchEvent(clickEvent);
-    /*contextIcon.addEventListener('click',function(e) {
-        if(categoryDeletion.style.display === "none") {
-            categoryDeletion.style.display = "block";
-            clearContent(categoryDeletion);
-            let para = createElement("p");
-            addInnerHTML(para,"Delete");
-            categoryDeletion.appendChild(para);
-            categoryDeletion.addEventListener('click',deleteCategory(index));
-            header.appendChild(categoryDeletion);
-        }
-        else {
-            categoryDeletion.style.display = "none";
-        }
-    });*/
     let para = createElement("p");
-    para.setAttribute("id","stats");
-    let getTask = createElement("input");
-    addInnerHTML(header,tasks[index]["taskName"])
-    header.style.color = "#117AD3";
-    header.style.fontFamily = "'Roboto', sans-serif";
-    addDiv.setAttribute("class", "subTaskAddition");
-    addDiv.setAttribute("id", index);
-    icon.setAttribute("id","addList");
-    icon.setAttribute("class","taskAdder");
+    mapAttributes(contextIcon,[["class", "contextIcon"],["id", index]]);
+    mapAttributes(categoryDeletion,[["class", "categoryDeletion"]]);
+    mapAttributes(para,[["id","stats"]]);
+    mapAttributes(addDiv,[["class", "subTaskAddition"],["id", index]]);
+    mapAttributes(icon,[["id","addList"],["class","taskAdder"]]);
+    addInnerHTML(header,tasks[index]["taskName"]);
     addInnerHTML(addDiv,"Add Task");
     displaySubTasks(index);
-    addDiv.addEventListener('click',function(e) {getSubTasks(e,index)});
+    //addDiv.addEventListener('click',function(e) {getSubTasks(e,index)});
     header.appendChild(contextIcon);
     header.appendChild(categoryDeletion);
     tasksBody.appendChild(header);
@@ -202,6 +206,7 @@ function showTaskDeleteOption(e) {
         let para = createElement("p");
         addInnerHTML(para,"Delete");
         categoryDeletion.appendChild(para);
+        mapAttributes(categoryDeletion,[["id",index]]);
         categoryDeletion.addEventListener('click',deleteCategory(index));  
     }
     else {
@@ -217,6 +222,7 @@ function showTaskDeleteOption(e) {
 function deleteCategory(index) {
     console.log(index);
     tasks[index].isDeleted = true;
+    //displayAddedCategory();
 }
 
 /**
@@ -259,26 +265,27 @@ function getCompletedTasks(index) {
  * @param e - The event object containing the eneterd value
  * @param index - The index of category in main array 
  */
-function getSubTasks(e,index) {
-    document.querySelector(".subTaskAddition").style.display = "none";
+function getSubTasks(e) {
+    let index = e.target.id;
+    mapAttributes(document.querySelector(".subTaskAddition"),[["class","subTaskAddition hideSubTasks"]]);
     let taskDetails = document.querySelector(".taskDetails");
     let getSubTask = createElement("input");
-    getSubTask.setAttribute("placeholder", "Type here");
-    getSubTask.setAttribute("class", "taskAddition");
-    getSubTask.setAttribute("id",index);
+    mapAttributes(getSubTask,[["placeholder", "Type here"],["class", "taskAddition"],["id",index]]);
     taskDetails.appendChild(getSubTask);
     let indexInfo = createElement("input");
-    indexInfo.setAttribute("class","indexInfo");
-    indexInfo.setAttribute("value",index);
-    indexInfo.setAttribute("type","hidden");
+    mapAttributes(indexInfo,[["class","indexInfo"],["value",index],["type","hidden"]]);
     taskDetails.appendChild(indexInfo);
-    document.querySelector(".subTaskAddition").style.display = "block";
+    mapAttributes(document.querySelector(".subTaskAddition"),[["class","subTaskAddition displaySubTasks"]]);
 }
 
+
+/**
+ * It adds tasks for a particular category to the main array
+ * @param e - The element containg index of category 
+ */
 function addSubTasks(e) {
     console.log(e.target.id+"@@@@@@@");
     if(e.keyCode === 13 && document.querySelector(".taskAddition").value != "") {
-        //document.querySelector(".subTaskAddition").style.display = "block";
         let index = document.querySelector(".indexInfo").value;
         let subTaskInfo = {};
         subTaskInfo["info"] = document.querySelector(".taskAddition").value;
@@ -299,32 +306,22 @@ function addSubTasks(e) {
  * @param index - The index of category in main array
  */
 function displaySubTasks(index) {
-    var taskDetails = document.querySelector(".subTaskDetails");
+    let taskDetails = document.querySelector(".subTaskDetails");
     clearContent(taskDetails);
     for(let key in tasks[index].subTasks) {
         (function () {
-            var div = createElement("div");
-            var para = createElement("p");
-            var taskIndex = key;
+            let div = createElement("div");
+            let para = createElement("p");
+            let taskIndex = key;
             div.setAttribute("class", "subTask");
-            var status = tasks[index].subTasks[key].isAvailable;
-            if(status) {
-                let uncheck = createElement("i");
-                uncheck.setAttribute("class", "selectIcon");
-                uncheck.setAttribute("id","unCheckedIcon");
-                div.appendChild(uncheck);
-                addInnerHTML(para,tasks[index].subTasks[taskIndex].info);
-                div.appendChild(para);
-                uncheck.addEventListener('click',function(e) {strikeContent(index,taskIndex,-1)});
-                para.addEventListener('click',function(e) {addSteps(index,taskIndex)});
-                taskDetails.appendChild(div);
-                displayStepsMenu();
-                addSteps(index,taskIndex);
-            }
+            let status = tasks[index].subTasks[key].isAvailable;
+            /*let metaDiv = createElement("div");
+            let indexInfo = createElement("input");
+            let subIndexInfo = createElement("input");
+            mapAttributes(indexInfo,)*/
             if(!status)  {
                 let check = createElement("i");
-                check.setAttribute("class", "selectIcon");
-                check.setAttribute("id","checkedIcon");
+                mapAttributes(check,[["class", "selectIcon"],["id","checkedIcon"]]);
                 div.appendChild(check);
                 let strikedTask = tasks[index].subTasks[taskIndex].info.strike();
                 addInnerHTML(para,strikedTask)
@@ -335,6 +332,16 @@ function displaySubTasks(index) {
                 displayStepsMenu();
                 addSteps(index,taskIndex);
             }
+            let uncheck = createElement("i");
+            mapAttributes(uncheck,[["class", "selectIcon"],["id","unCheckedIcon"]]);
+            div.appendChild(uncheck);
+            addInnerHTML(para,tasks[index].subTasks[taskIndex].info);
+            div.appendChild(para);
+            uncheck.addEventListener('click',function(e) {strikeContent(index,taskIndex,-1)});
+            para.addEventListener('click',function(e) {addSteps(index,taskIndex)});
+            taskDetails.appendChild(div);
+            displayStepsMenu();
+            addSteps(index,taskIndex);
         }());
     }
 }
@@ -350,30 +357,23 @@ function addSteps(index,subIndex) {
     let header = document.querySelector(".stepHeader");
     clearContent(header);
     addSlider();
-    var stepDetails = document.querySelector(".steps");
     clearContent(document.querySelector(".stepInputDiv"));
     let radio = createElement("input");
     let step = createElement("input");
     let inputDiv = createElement("div");
     let para = createElement("p");
-    para.setAttribute("id","stepHeading");
     let countPara = createElement("p");
-    countPara.setAttribute("id","stepStats");
-    addInnerHTML(countPara,`${getCompletedSteps(index,subIndex)} of ${getTotalSteps(index,subIndex)} steps completed`);
-    inputDiv.setAttribute("class","stepInput");
-    step.setAttribute("class", "inputStep");
-    step.setAttribute("placeholder", "Add step");
-    inputDiv.appendChild(step);
-    radio.setAttribute("type","checkbox");
-    radio.setAttribute("id", "taskCheckBox");
     let categoryInfo = createElement("input");
     let taskInfo = createElement("input");
-    categoryInfo.setAttribute("id","category");
-    categoryInfo.setAttribute("type","hidden");
-    categoryInfo.setAttribute("value",index);
-    taskInfo.setAttribute("id","task");
-    taskInfo.setAttribute("type","hidden");
-    taskInfo.setAttribute("value", subIndex);
+    addInnerHTML(countPara,`${getCompletedSteps(index,subIndex)} of ${getTotalSteps(index,subIndex)} steps completed`);
+    mapAttributes(para,[["id","stepHeading"]]);
+    mapAttributes(countPara,[["id","stepStats"]]);
+    mapAttributes(inputDiv,[["class","stepInput"]]);
+    mapAttributes(step,[["class", "inputStep"],["placeholder", "Add step"]]);
+    inputDiv.appendChild(step);
+    mapAttributes(radio,[["type","checkbox"],["id", "taskCheckBox"]]);
+    mapAttributes(categoryInfo,[["id","category"],["type","hidden"],["value",index]]);
+    mapAttributes(taskInfo,[["id","task"],["type","hidden"],["value", subIndex]]);
     header.appendChild(countPara);
     let status = tasks[index].subTasks[subIndex].isAvailable;
     if(status) {
@@ -445,8 +445,7 @@ function addSlider () {
 function editTaskName(index,subIndex) {
     let header = document.querySelector(".stepHeader").firstChild;
     let input = createElement("input");
-    input.setAttribute("class", "newTaskHeading");
-    input.setAttribute("value", tasks[index].subTasks[subIndex].info);
+    mapAttributes(input,[["class", "newTaskHeading"],["value", tasks[index].subTasks[subIndex].info]]);
     clearContent(header);
     document.querySelector(".stepHeader").appendChild(input);
 }
@@ -460,6 +459,7 @@ function updateTaskHeading(e) {
     if(e.keyCode === 13 && e.target.value != "") {
         let categoryIndex = document.querySelector("#category").value;
         let taskIndex = document.querySelector("#task").value;
+        //console.log()
         tasks[categoryIndex].subTasks[taskIndex].info = e.target.value;
         addTasks(categoryIndex);
         displayStepsMenu();
@@ -493,7 +493,7 @@ function getSteps (e) {
  */      
 function displayStepsMenu () {
     var tasks = document.querySelector(".tasks");
-    if(tasks.style.width == "85em") {
+    /*if(tasks.style.width == "85em") {
         document.querySelector(".subTask").style.width = "50em";
         tasks.style.width = "57em";
         document.querySelector(".stepDetails").style.width = "40em";
@@ -505,7 +505,46 @@ function displayStepsMenu () {
         tasks.style.width = "85em";
         document.querySelector(".stepDetails").style.left = "100em";
         tasks.style.marginRight = "0em";
+    }*/
+
+    if(getClassByClassName("tasks tasksClosed") != null) {
+        mapAttributes(document.querySelector(".subTask"),[["class","subTasks"]]);
+        mapAttributes(document.querySelector(".tasks"),[["class","tasks tasksClosedStepsOpen"]]);
+        mapAttributes(document.querySelector(".stepDetails"),[["class","stepDetails stepDetailsOpen"]]);
+
     }
+
+    else {
+        mapAttributes(document.querySelector(".stepDetails"),[["class","stepDetails stepDetailsClosed"]]);
+        mapAttributes(document.querySelector(".subTask"),[["class","subTask subTaskClosed"]]);
+        mapAttributes(document.querySelector(".tasks"),[["class", "tasks taskClosedStepsOpen"]]);
+
+    }
+}
+
+function getClassByClassName(name) {
+    styleClass = document.querySelector("."+name);
+        return styleClass;
+}
+
+/**
+ * It displays the side menu when the user clicks the menu icon
+ * All functions of the To do app is accessed from here
+ * 
+ */
+function displaySideMenu(e) {
+    let tasks = document.querySelector(".tasks");
+    console.log(e.target.value)
+    if(e.target.value === "open") {
+        e.target.value = "close";
+        mapAttributes(document.querySelector(".menu"),[["class","menu menuClosed"]]);
+        mapAttributes(document.querySelector(".tasks"),[["class","tasks tasksClosed"]]);
+    }
+    else {
+        e.target.value = "open";
+        mapAttributes(document.querySelector(".menu"),[["class","menu"]]);
+        mapAttributes(document.querySelector(".tasks"),[["class","tasks"]]);
+    }   
 }
 
 /**
@@ -622,28 +661,30 @@ function clearContent(obj) {
 }
 
 /**
- * It displays the side menu when the user clicks the menu icon
- * All functions of the To do app is accessed from here
- * 
+ * It sets attributes for an element
  */
-function displaySideMenu(e) {
-    let tasks = document.querySelector(".tasks");
-    console.log(e.target.value)
-    if(e.target.value === "open") {
-        e.target.value = "close";
-        document.querySelector(".menu").setAttribute("class", "menu menuClosed");
-        //document.querySelector(".category").setAttribute("class", "category categoryHidden");
-        //document.querySelector(".newList").setAttribute("class", "newList newListHidden");
-        document.querySelector(".tasks").setAttribute("class", "tasks tasksClosed");
+function mapAttributes(obj,propertyMap) {
+    console.log(obj);
+    for (let [key,value] of propertyMap) {
+        obj.setAttribute(key,value);
+        console.log(key);
+        console.log(value);
     }
-    else {
-        e.target.value = "open";
-        document.querySelector(".menu").setAttribute("class", "menu");
-        //document.querySelector(".category").setAttribute("class", "category");
-        //document.querySelector(".newList").setAttribute("class", "newList");
-        document.querySelector(".tasks").setAttribute("class", "tasks");
-    }   
 }
+
+/**
+ * It sets attributes for an element
+ */
+function mapStyles(obj,styleMap) {
+    console.log(obj);
+    for (let [key,value] of styleMap) {
+        obj.style.key = value;
+        console.log(key);
+        console.log(value);
+    }
+}
+
+
 
 
 
