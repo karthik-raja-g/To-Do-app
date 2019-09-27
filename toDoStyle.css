@@ -32,6 +32,31 @@
   cursor: pointer;
 }
 
+.header .searchBox {
+  position: absolute;
+  width: 26em;
+  height: 2.5em;
+  top: 0.7em;
+  right: 36em;
+  background-color: #b3d9ff;
+  border-radius: 0.15em;
+  font-size: 100%;
+  font-family: 'Roboto', sans-serif;
+
+}
+
+.header .searchBox .lens {
+  position: relative;
+  width: 26em;
+  height: 2.5em;
+  outline:none;
+  background: url("img/search.svg");
+}
+
+.header .searchBox:hover {
+  background-color: white;
+}
+
 .body {
   position: relative;
   height: 100em;
@@ -48,6 +73,10 @@
   width: 10em;
   transition: 0.3s; 
   top: 4.3em;
+}
+
+.body .menuClosed {
+  width: 18em;
 }
 
 /*.body .menu a {
@@ -81,6 +110,16 @@
   background-color: white;
 }
 
+.body .menu .menuOptions .totalCategories {
+  position: absolute;
+  top: 12em;
+  right: 3em;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  font-style: normal;
+  border: #117AD3;
+}
+
 #sideNav {
   position: relative;
   left: 1em;
@@ -108,9 +147,14 @@
   border-color: #d9d9d9;
   border-width: 1px;
   transition: 0.3s;
-  display: block;
+  /*display: block;*/
   overflow-x: hidden;
   top: -2.1em;
+}
+
+.tasksClosed {
+  width: 85em;
+  margin-left: 15em;
 }
 
 .tasks .subTaskHeader .categoryDeletion {
@@ -155,7 +199,7 @@
   cursor: pointer;
 }
 
-.sideMenuIcons: hover {
+.sideMenuIcons:hover {
   background-color: #d9d9d9;
 }
 
@@ -207,6 +251,10 @@
   width: 10em;
   font-size: 118%;
   border: none;
+  visibility: visible;
+}
+
+newListHidden{
   visibility: hidden;
 }
 
@@ -218,29 +266,41 @@
 
 .category {
   position: relative;
-  top: 1em;
+  top: 0em;
   height: fit-content;
   width: 18em;
+  right: 0.3em;
+  visibility: visible;
   /*overflow-y: auto;
   overflow-x: hidden;*/
 }
 
+.categoryHidden {
+  visibility: hidden;
+}
+
 .categoryName {
   position: relative;
-  width: 15em;
-  height: 1em;
-  display: inline;
+  width: 18em;
+  height: 2em;
+  display: block;
+  margin: 0.3em;
+  cursor: pointer;
+}
+
+.categoryName:hover {
+  background-color: white;
 }
 
 .categoryName p {
   display: block;
-  cursor: pointer;
   position:relative;
   right: -4em;
   top: -2em;
+  width: 6em;
 }
 
-.categoryName: hover {
+.categoryName:hover {
   background-color: white;
 }
 
@@ -255,7 +315,7 @@
   border: none;
   height: 3em;
   border-bottom-style: solid;
-  border-color: grey;
+  border-color:  #d9d9d9;
   border-width: 1px;
   visibility: hidden; 
 }
@@ -286,12 +346,13 @@
 
 .subTaskAddition {
   position: relative;
-  left: 14em;
-  top: 2em;
+  left: 19em;
+  top: 4.5em;
   width: 5em;
   height: 3em;
   cursor: pointer;
   font-family: 'Roboto', sans-serif;
+  display: block;
 }
 
 .tasks h1 {
@@ -326,7 +387,7 @@
   border-width: 1px;
   font-family: 'Roboto', sans-serif;
   align-content: center;
-  border-color: grey;
+  border-color:  #d9d9d9;
 }
 
 .subTask p {
@@ -562,7 +623,7 @@
   position: relative;
   top: -2.4em;
   border: none;
-  width: 16em;
+  width: 45em;
   outline: none;
   display: inline-block;
 }

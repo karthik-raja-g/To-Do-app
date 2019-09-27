@@ -1,6 +1,7 @@
 
 // The main array to which all tasks related details are to be added in form of objects
 var tasks = [];
+var clickEvent = new Event('click');
 
     /* It checks for any key press events that occurs in the body
      * and redirects it the correct receivers based on class name
@@ -25,7 +26,25 @@ var tasks = [];
         }
     });
 
-    document.getElementById("sideNav").addEventListener('click', displaySideMenu);
+    document.querySelector('body').addEventListener("click", function (e) {
+        console.log('^^^^^^^');
+        console.log(e.target.className);
+
+        if(e.target.id === "sideNav") {
+            console.log("*****");
+            displaySideMenu(e);
+        }
+
+        if(e.target.className === "categoryName") {
+            console.log("######");
+            addTasks(e);
+        }
+
+        if(e.target.className === "contextIcon") {
+            console.log("###5555###");
+            showTaskDeleteOption(e);
+        }
+    });
 
 /**
  * the event when the user adds a new list. The function checks
@@ -49,7 +68,6 @@ function addCategory(e) {
         tasks.push(taskDetails); 
         console.log(tasks);
         e.target.value = "";        
-        //document.querySelector("#counter").innerHTML = (count+=1);
         displayAddedCategory();
     }  
   }
@@ -60,7 +78,10 @@ function addCategory(e) {
  */
 function displayAddedCategory() {
     let div = document.querySelector(".category");
+    let stats = document.querySelector(".menuOptions").lastChild;
+    clearContent(stats);
     clearContent(div);
+    showTotalCategories();
     for(let i = 0; i < tasks.length; i++) {
         (function () {
             if (tasks[i].isDeleted == false) {
@@ -70,13 +91,12 @@ function displayAddedCategory() {
                 let categoryDiv = createElement("div");
                 let icon = createElement("i");
                 let para = createElement("p");
-                categoryDiv.setAttribute("id",id);
                 icon.setAttribute("class","sideMenuIcons");
                 icon.setAttribute("id","list");
                 icon.setAttribute("display","inline");
                 categoryDiv.setAttribute("class", "categoryName");
-                categoryDiv.setAttribute("id", "cateName");
-                categoryDiv.addEventListener('click',function(e) {addTasks(index)});
+                categoryDiv.setAttribute("id", index);
+                categoryDiv.dispatchEvent(clickEvent);
                 addInnerHTML(para,tasks[i].taskName);
                 categoryDiv.appendChild(icon);
                 categoryDiv.appendChild(para);
@@ -87,34 +107,52 @@ function displayAddedCategory() {
 }
 
 /**
+ * It gets the total number of categories added
+ *  
+ */
+function showTotalCategories() {
+    let menuBar = document.querySelector(".menuOptions")
+    let para = createElement("p");
+    para.setAttribute("class", "totalCategories");
+    let count = 0;
+    for(let key in tasks) {
+        if(tasks[key].isDeleted === false)
+            count += 1;
+    }
+    addInnerHTML(para,count);
+    menuBar.appendChild(para);
+}
+
+/**
  * It asks the user to add tasks for a particular category after
  * he/she presses the particular category
  *
  * @param index The index of main category selected in the array 
  */
-function addTasks(index) {
-    console.log(index+"gggggggggggggggggg");
+function addTasks(e) {
+    let index = e.target.id;
     let totalTasks;
     let completedTasks;
     document.querySelector(".taskDetails").style.visibility = "visible";
-    var taskInfo = document.querySelector(".taskDetails");
-    var tasksBody = document.querySelector(".tasks");
+    let taskInfo = document.querySelector(".taskDetails");
+    let tasksBody = document.querySelector(".tasks");
     clearContent(taskInfo);
     clearContent(tasksBody.lastChild);
     clearContent(document.querySelector(".subTaskDetails"));
-    var header = document.querySelector(".subTaskHeader");
+    let header = document.querySelector(".subTaskHeader");
     let addDiv = createElement("div");
     let icon = createElement("i");
     let contextIcon = createElement("i");
     contextIcon.setAttribute("class", "contextIcon");
+    contextIcon.setAttribute("id", index);
     let categoryDeletion = createElement("div");
-    categoryDeletion.setAttribute("class", "categoryDeletion"); 
-    contextIcon.addEventListener('click',function(e) {
+    categoryDeletion.setAttribute("class", "categoryDeletion");
+    contextIcon.dispatchEvent(clickEvent);
+    /*contextIcon.addEventListener('click',function(e) {
         if(categoryDeletion.style.display === "none") {
             categoryDeletion.style.display = "block";
             clearContent(categoryDeletion);
             let para = createElement("p");
-            let i = index;
             addInnerHTML(para,"Delete");
             categoryDeletion.appendChild(para);
             categoryDeletion.addEventListener('click',deleteCategory(index));
@@ -123,7 +161,7 @@ function addTasks(index) {
         else {
             categoryDeletion.style.display = "none";
         }
-    });
+    });*/
     let para = createElement("p");
     para.setAttribute("id","stats");
     let getTask = createElement("input");
@@ -138,6 +176,7 @@ function addTasks(index) {
     displaySubTasks(index);
     addDiv.addEventListener('click',function(e) {getSubTasks(e,index)});
     header.appendChild(contextIcon);
+    header.appendChild(categoryDeletion);
     tasksBody.appendChild(header);
     totalTasks = tasks[index].subTasks.length;
     completedTasks = getCompletedTasks(index);
@@ -145,6 +184,29 @@ function addTasks(index) {
     tasksBody.appendChild(para);
     addDiv.appendChild(icon);
     taskInfo.appendChild(addDiv);
+}
+
+/**
+ * It shows the delete option for a task
+ * @param e 
+ */
+function showTaskDeleteOption(e) {
+    let header = document.querySelector(".subTaskHeader"); 
+    let index = e.target.id;
+    console.log(index+"&&&&&");
+    let categoryDeletion = document.querySelector(".categoryDeletion");
+    if(categoryDeletion.style.display == "none") {
+        console.log("@@@@@@@");
+        categoryDeletion.style.display = "block";
+        clearContent(categoryDeletion);
+        let para = createElement("p");
+        addInnerHTML(para,"Delete");
+        categoryDeletion.appendChild(para);
+        categoryDeletion.addEventListener('click',deleteCategory(index));  
+    }
+    else {
+        categoryDeletion.style.display = "none";
+    }
 }
 
 /**
@@ -198,20 +260,25 @@ function getCompletedTasks(index) {
  * @param index - The index of category in main array 
  */
 function getSubTasks(e,index) {
+    document.querySelector(".subTaskAddition").style.display = "none";
     let taskDetails = document.querySelector(".taskDetails");
-    let getSubTask = createElement("textarea");
+    let getSubTask = createElement("input");
     getSubTask.setAttribute("placeholder", "Type here");
     getSubTask.setAttribute("class", "taskAddition");
+    getSubTask.setAttribute("id",index);
     taskDetails.appendChild(getSubTask);
     let indexInfo = createElement("input");
     indexInfo.setAttribute("class","indexInfo");
     indexInfo.setAttribute("value",index);
     indexInfo.setAttribute("type","hidden");
     taskDetails.appendChild(indexInfo);
+    document.querySelector(".subTaskAddition").style.display = "block";
 }
 
 function addSubTasks(e) {
+    console.log(e.target.id+"@@@@@@@");
     if(e.keyCode === 13 && document.querySelector(".taskAddition").value != "") {
+        //document.querySelector(".subTaskAddition").style.display = "block";
         let index = document.querySelector(".indexInfo").value;
         let subTaskInfo = {};
         subTaskInfo["info"] = document.querySelector(".taskAddition").value;
@@ -554,29 +621,28 @@ function clearContent(obj) {
     obj.innerHTML = "";
 }
 
-
 /**
  * It displays the side menu when the user clicks the menu icon
  * All functions of the To do app is accessed from here
  * 
  */
-function displaySideMenu() {
-    var tasks = document.querySelector(".tasks");
-    var sheets = document.styleSheets;
-    if(tasks.style.width == "100em") {
-        tasks.style.width = "85em";
-        tasks.style.marginLeft = "15em";
-        document.querySelector(".menu").style.width = "18em";
-        document.querySelector(".category").style.visibility = "visible";
-        document.querySelector(".newList").style.visibility = "visible";
+function displaySideMenu(e) {
+    let tasks = document.querySelector(".tasks");
+    console.log(e.target.value)
+    if(e.target.value === "open") {
+        e.target.value = "close";
+        document.querySelector(".menu").setAttribute("class", "menu menuClosed");
+        //document.querySelector(".category").setAttribute("class", "category categoryHidden");
+        //document.querySelector(".newList").setAttribute("class", "newList newListHidden");
+        document.querySelector(".tasks").setAttribute("class", "tasks tasksClosed");
     }
     else {
-        tasks.style.width = "100em";
-        document.querySelector(".menu").style.width = "10em";
-        tasks.style.marginLeft = "0em";
-        document.querySelector(".category").style.visibility = "hidden";
-        document.querySelector(".newList").style.visibility = "hidden";
-    }
+        e.target.value = "open";
+        document.querySelector(".menu").setAttribute("class", "menu");
+        //document.querySelector(".category").setAttribute("class", "category");
+        //document.querySelector(".newList").setAttribute("class", "newList");
+        document.querySelector(".tasks").setAttribute("class", "tasks");
+    }   
 }
 
 
